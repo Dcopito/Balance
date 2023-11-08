@@ -1,13 +1,13 @@
-package com.copito.Balance;
+package copito.security;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BalanceApplicationTests {
+class SecurityApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
