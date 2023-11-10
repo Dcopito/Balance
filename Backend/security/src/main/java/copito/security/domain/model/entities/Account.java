@@ -14,5 +14,5 @@ public class Account {
     private String password;
     private LocalDate cratedAt;
     private LocalDate lastSession;
-    private Role rol;
+    private Role role;
 }

@@ -1,0 +1,72 @@
+---
+server:
+  error:
+    include-stacktrace: never
+  port: 5555
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: security-current-session
+          #uri: https://s10-14-ft-api-security.azurewebsites.net
+          uri: lb://security
+          predicates:
+            - Path=/api/accounts/current-session
+          filters:
+            - CustomAuthenticationFilter
+
+        - id: security
+          #uri: https://s10-14-ft-api-security.azurewebsites.net
+          uri: lb://security
+          predicates:
+            - Path=/**
+        - id: user-service
+          #uri: https://s10-14-ft-api-users.azurewebsites.net
+          uri: lb://user-service
+          predicates:
+            - Path=/api/**
+          filters:
+            - CustomAuthenticationFilter
+        - id: loans-application
+          #uri: https://s10-14-ft-api-users.azurewebsites.net
+          uri: lb://loans-application
+          predicates:
+            - Path=/api/v1/**
+          filters:
+            - CustomAuthenticationFilter
+        - id: user-service-swagger
+          uri: https://s10-14-ft-api-users.azurewebsites.net
+          predicates:
+            - Path=/**
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      #defaultZone: https://s10-14-ft-eurekaserver.azurewebsites.net/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+jwt:
+  secret: RandomSecretKey123456789!RandomSecretKey123456789!RandomSecretKey123456789!
+...
