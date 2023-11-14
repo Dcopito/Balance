@@ -2,13 +2,12 @@ package copito.apigateway.filters;
 
 import copito.apigateway.jwt.JwtProvider;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.net.http.HttpHeaders;
-import java.util.function.Consumer;
 
 @Slf4j
 @Component
@@ -49,9 +48,12 @@ public class CustomAuthenticationFilter extends AbstractGatewayFilterFactory<Cus
             }catch (Exception e){
                 log.error("INVALID_TOKEN");
                 log.error("Exception: {}", e.getMessage());
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             }
 
-        }
+            log.info("End of the filter jwt");
+            return chain.filter(exchange);
+        };
     }
 
 
