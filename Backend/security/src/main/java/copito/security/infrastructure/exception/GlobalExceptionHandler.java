@@ -1,6 +1,6 @@
 package copito.security.infrastructure.exception;
 
-import copito.security.domain.exceptions.AccountEntityAlreadyExists;
+import copito.security.domain.exceptions.AccountAlreadyExists;
 import copito.security.domain.model.dto.ExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(exceptionDto);
     }
 
-    @ExceptionHandler(value = AccountEntityAlreadyExists.class)
-    public ResponseEntity<ExceptionDTO> handlerConflictException(AccountEntityAlreadyExists e){
+    @ExceptionHandler(value = AccountAlreadyExists.class)
+    public ResponseEntity<ExceptionDTO> handlerConflictException(AccountAlreadyExists e){
         var exceptionDto = ExceptionDTO.builder()
                 .detail(e.getMessage())
                 .status(HttpStatus.CONFLICT.value())

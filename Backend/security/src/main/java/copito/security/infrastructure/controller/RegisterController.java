@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController("/api/accounts/regsiter")
 @RequiredArgsConstructor
-public class RegsiterController {
+public class RegisterController {
     private final RegisterAccountUseCase useCase;
 
     @Retry(name = "securityRetry")
